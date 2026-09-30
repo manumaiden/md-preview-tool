@@ -15,8 +15,8 @@ paste already-rendered text.
 2. The right panel shows a live, rendered preview as you type.
 3. Click **Copy formatted** to copy the rendered result to your clipboard
    as rich text.
-4. Paste it into the ticketing tool's comment field — the formatting is
-   preserved.
+4. Paste it into the ticketing tool's comment field — the formatting
+   (and the font, Courier New 13pt by default) is preserved.
 
 Four extra buttons above the markdown box (**Signature**, **Template 1**,
 **Template 2**, **Template 3**) each insert a piece of fixed text at the

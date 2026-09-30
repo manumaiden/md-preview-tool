@@ -40,8 +40,15 @@ function showStatus(message, isError) {
   copyStatus.className = isError ? 'error' : 'success';
 }
 
+// Font applied to the copied rich text so it also survives paste into the
+// ticketing tool, the same way bold/italic/headings already do: wrapping
+// the copied HTML in an element with an inline style carries that style
+// along with the clipboard payload.
+const COPY_FONT_FAMILY = "'Courier New', Courier, monospace";
+const COPY_FONT_SIZE = '13pt';
+
 async function copyFormatted() {
-  const html = preview.innerHTML;
+  const html = `<div style="font-family: ${COPY_FONT_FAMILY}; font-size: ${COPY_FONT_SIZE};">${preview.innerHTML}</div>`;
   const text = preview.innerText;
 
   if (!navigator.clipboard || !window.ClipboardItem) {
