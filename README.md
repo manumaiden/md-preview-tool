@@ -5,6 +5,10 @@ ticketing tool that no longer understands markdown syntax but does
 preserve formatting (bold, italic, headings, lists, line breaks) when you
 paste already-rendered text.
 
+## In action
+
+![Writing markdown, watching the live preview, inserting a signature snippet, and copying the formatted result](docs/screenshots/demo.gif)
+
 ## What it does
 
 1. You write your update in markdown in the left panel.
