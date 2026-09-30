@@ -18,6 +18,11 @@ paste already-rendered text.
 4. Paste it into the ticketing tool's comment field — the formatting
    (and the font, Courier New 13pt by default) is preserved.
 
+   Note: some rich-text fields (e.g. Salesforce Case Comments) strip the
+   font on their own to enforce their platform's default typeface — this
+   is a deliberate choice on their side and not something a paste can
+   override.
+
 Four extra buttons above the markdown box (**Signature**, **Template 1**,
 **Template 2**, **Template 3**) each insert a piece of fixed text at the
 end of whatever you've already written, so you don't have to retype your
@@ -107,6 +112,9 @@ of a message you typed yourself.
 - This tool has no automated test suite; everything is verified by using
   it. If something looks wrong, check the browser's developer console for
   errors.
+- After updating the code and running `docker compose up -d --build`, do
+  a hard refresh in the browser (Ctrl+Shift+R / Cmd+Shift+R) — otherwise
+  it may keep showing a cached copy of the old page.
 
 ## License
 
