@@ -47,8 +47,22 @@ function showStatus(message, isError) {
 const COPY_FONT_FAMILY = "'Courier New', Courier, monospace";
 const COPY_FONT_SIZE = '13pt';
 
+// Zero out the default top/bottom margin browsers put on block elements
+// (paragraphs, lists, headings) so consecutive lines don't get an extra
+// blank-line gap when pasted. Set inline (not via a stylesheet) so it
+// travels with the copied HTML, same reasoning as the font above. This is
+// a best-effort attempt: some ticketing tools re-normalize pasted HTML on
+// save and may discard inline styles on the elements they create, in
+// which case this has no effect there.
+const COPY_ZERO_MARGIN_SELECTOR = 'p, ul, ol, li, h1, h2, h3, h4, h5, h6, blockquote, pre';
+
 async function copyFormatted() {
-  const html = `<div style="font-family: ${COPY_FONT_FAMILY}; font-size: ${COPY_FONT_SIZE};">${preview.innerHTML}</div>`;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = preview.innerHTML;
+  wrapper.querySelectorAll(COPY_ZERO_MARGIN_SELECTOR).forEach((el) => {
+    el.style.margin = '0';
+  });
+  const html = `<div style="font-family: ${COPY_FONT_FAMILY}; font-size: ${COPY_FONT_SIZE};">${wrapper.innerHTML}</div>`;
   const text = preview.innerText;
 
   if (!navigator.clipboard || !window.ClipboardItem) {
