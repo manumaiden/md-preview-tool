@@ -1,5 +1,13 @@
+// Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
+// (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
+// version, build date as DDMMYYYY).
+const VERSION = '1.3';
+const BUILD_DATE = '30092026';
+
 const input = document.getElementById('markdown-input');
 const preview = document.getElementById('preview');
+
+document.getElementById('version-badge').textContent = `v${VERSION} (${BUILD_DATE}) by manumaiden`;
 
 marked.setOptions({ breaks: true });
 

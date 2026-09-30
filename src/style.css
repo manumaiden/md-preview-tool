@@ -11,6 +11,12 @@ body {
 header { margin-bottom: 1.5rem; }
 .subtitle { color: #555; margin-top: 0.25rem; }
 
+.version-badge {
+  font-size: 0.85rem;
+  font-weight: normal;
+  color: #999;
+}
+
 .panels {
   display: flex;
   gap: 1.5rem;
