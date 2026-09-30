@@ -1,0 +1,8 @@
+services:
+  markdown-preview:
+    build: .
+    ports:
+      - "8420:80"
+    restart: unless-stopped
+    volumes:
+      - ./snippets:/usr/share/nginx/html/snippets:ro
