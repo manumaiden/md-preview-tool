@@ -29,6 +29,9 @@ end of whatever you've already written, so you don't have to retype your
 sign-off or common replies every time. See **Customizing** below to change
 what they insert.
 
+The red **Clear** button at the end of that same row empties both the
+markdown box and the preview with one click.
+
 ## Requirements
 
 - Docker with the `docker compose` plugin (`docker compose version` should

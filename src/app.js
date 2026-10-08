@@ -1,8 +1,8 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.3';
-const BUILD_DATE = '30092026';
+const VERSION = '1.4';
+const BUILD_DATE = '08102026';
 
 const input = document.getElementById('markdown-input');
 const preview = document.getElementById('preview');
@@ -39,6 +39,14 @@ input.addEventListener('input', () => {
 });
 
 renderMarkdown();
+
+const clearButton = document.getElementById('clear-button');
+
+clearButton.addEventListener('click', () => {
+  input.value = '';
+  renderMarkdown();
+  input.focus();
+});
 
 const copyButton = document.getElementById('copy-button');
 const copyStatus = document.getElementById('copy-status');
