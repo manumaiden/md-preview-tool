@@ -73,17 +73,22 @@ Then restart with `docker compose up -d --build`.
 
 ## Customizing the Signature and Templates
 
-The text inserted by the **Signature**, **Template 1**, **Template 2** and
-**Template 3** buttons comes from four plain text files in the `snippets/`
-folder at the project root:
+The text inserted by the **Signature** and **Template 1**–**5** buttons
+comes from six plain text files in the `snippets/` folder at the project
+root:
 
 ```
 snippets/
 ├── signature.md
 ├── template-1.md
 ├── template-2.md
-└── template-3.md
+├── template-3.md
+├── template-4.md
+└── template-5.md
 ```
+
+`template-4.md` and `template-5.md` ship empty: clicking those buttons
+does nothing until you add text to the file.
 
 To change what a button inserts:
 
