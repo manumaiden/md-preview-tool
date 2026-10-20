@@ -120,6 +120,9 @@ of a message you typed yourself.
 - This tool has no automated test suite; everything is verified by using
   it. If something looks wrong, check the browser's developer console for
   errors.
+- Pasting a very long unbroken line (e.g. log/command output with no
+  spaces to wrap at) makes that line scroll horizontally *inside* the
+  preview panel — it won't push the rest of the page out of view.
 - After updating the code and running `docker compose up -d --build`, do
   a hard refresh in the browser (Ctrl+Shift+R / Cmd+Shift+R) — otherwise
   it may keep showing a cached copy of the old page.
