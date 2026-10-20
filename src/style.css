@@ -25,6 +25,9 @@ header { margin-bottom: 1.5rem; }
 
 .panel {
   flex: 1 1 400px;
+  min-width: 0; /* let the panel shrink below its content's natural width
+                   (e.g. a long unbroken log line) instead of stretching
+                   the whole page horizontally */
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -91,10 +94,19 @@ header { margin-bottom: 1.5rem; }
   border: 1px solid #ccc;
   border-radius: 4px;
   overflow-y: auto;
+  overflow-x: auto;
   background: #fafafa;
 }
 
 #preview :first-child { margin-top: 0; }
+
+/* Long unbroken lines (e.g. pasted log/table output) scroll horizontally
+   inside their own box instead of forcing the panel, and the whole page,
+   wider than the viewport. */
+#preview pre, #preview code, #preview table {
+  max-width: 100%;
+  overflow-x: auto;
+}
 
 #copy-button {
   margin-top: 1rem;
