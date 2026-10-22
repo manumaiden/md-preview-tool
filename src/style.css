@@ -127,5 +127,28 @@ header { margin-bottom: 1.5rem; }
   min-height: 1.2em;
 }
 
+.scroll-top-button {
+  display: none;
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  line-height: 1;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.scroll-top-button:hover { background: #1d4ed8; }
+
+.scroll-top-button.visible { display: flex; }
+
 #copy-status.error { color: #b91c1c; }
 #copy-status.success { color: #15803d; }

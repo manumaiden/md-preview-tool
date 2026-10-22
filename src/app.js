@@ -1,8 +1,8 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.6';
-const BUILD_DATE = '20102026';
+const VERSION = '1.7';
+const BUILD_DATE = '22102026';
 
 const input = document.getElementById('markdown-input');
 const preview = document.getElementById('preview');
@@ -136,4 +136,18 @@ document.querySelectorAll('.snippet-button').forEach((button) => {
   const name = button.dataset.snippet;
   loadSnippet(name);
   button.addEventListener('click', () => appendSnippet(snippetCache[name]));
+});
+
+// "Back to top" button: lets you reach the snippet/Clear buttons again
+// without scrolling up by hand after the page has grown taller than the
+// viewport (e.g. a resized textarea or a long pasted log).
+const scrollTopButton = document.getElementById('scroll-top-button');
+const SCROLL_TOP_THRESHOLD = 300;
+
+window.addEventListener('scroll', () => {
+  scrollTopButton.classList.toggle('visible', window.scrollY > SCROLL_TOP_THRESHOLD);
+});
+
+scrollTopButton.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
