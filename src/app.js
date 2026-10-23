@@ -1,7 +1,7 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.8';
+const VERSION = '1.9';
 const BUILD_DATE = '23102026';
 
 const input = document.getElementById('markdown-input');
@@ -237,11 +237,16 @@ codeBlockButton.addEventListener('click', () => {
   const end = input.selectionEnd;
   const before = input.value.slice(0, start);
   const after = input.value.slice(end);
-  input.value = before + CODE_BLOCK_TEMPLATE + after;
+  // Start (and end) the block on its own line: a fenced code block mashed
+  // into the middle of an existing line isn't valid markdown.
+  const leadingNewline = before === '' || before.endsWith('\n') ? '' : '\n';
+  const trailingNewline = after === '' || after.startsWith('\n') ? '' : '\n';
+  const insertion = leadingNewline + CODE_BLOCK_TEMPLATE + trailingNewline;
+  input.value = before + insertion + after;
   renderMarkdown();
   updateStats();
   input.focus();
-  const cursorPos = start + CODE_BLOCK_PREFIX.length;
+  const cursorPos = start + leadingNewline.length + CODE_BLOCK_PREFIX.length;
   input.selectionStart = input.selectionEnd = cursorPos;
 });
 
