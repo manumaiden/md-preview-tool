@@ -7,8 +7,11 @@
 </head>
 <body>
   <header>
-    <h1>Markdown Preview Tool <span id="version-badge" class="version-badge"></span></h1>
-    <p class="subtitle">Write in markdown, copy the formatted result into the ticketing tool</p>
+    <div class="header-text">
+      <h1>Markdown Preview Tool <span id="version-badge" class="version-badge"></span></h1>
+      <p class="subtitle">Write in markdown, copy the formatted result into the ticketing tool</p>
+    </div>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">Dark mode</button>
   </header>
   <main class="panels">
     <section class="panel">
@@ -20,14 +23,19 @@
         <button type="button" class="snippet-button" data-snippet="template-3">Template 3</button>
         <button type="button" class="snippet-button" data-snippet="template-4">Template 4</button>
         <button type="button" class="snippet-button" data-snippet="template-5">Template 5</button>
+        <button type="button" id="code-block-button" class="code-block-button">Insert Code Block</button>
         <button type="button" id="clear-button" class="clear-button">Clear</button>
       </div>
       <textarea id="markdown-input" placeholder="Write your update here in markdown..."></textarea>
+      <p id="markdown-stats" class="markdown-stats"></p>
     </section>
     <section class="panel">
       <h2>Preview</h2>
       <div id="preview" contenteditable="true"></div>
-      <button id="copy-button">Copy formatted</button>
+      <div class="copy-buttons">
+        <button id="copy-button">Copy formatted</button>
+        <button id="copy-plain-button">Copy as plain text</button>
+      </div>
       <p id="copy-status" role="status"></p>
     </section>
   </main>

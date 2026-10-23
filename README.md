@@ -23,14 +23,34 @@ paste already-rendered text.
    is a deliberate choice on their side and not something a paste can
    override.
 
-Four extra buttons above the markdown box (**Signature**, **Template 1**,
-**Template 2**, **Template 3**) each insert a piece of fixed text at the
-end of whatever you've already written, so you don't have to retype your
-sign-off or common replies every time. See **Customizing** below to change
-what they insert.
+Six extra buttons above the markdown box (**Signature** and **Template
+1**–**5**) each insert a piece of fixed text at the end of whatever
+you've already written, so you don't have to retype your sign-off or
+common replies every time. See **Customizing** below to change what they
+insert.
+
+The green **Insert Code Block** button inserts a ` ```bash ` fenced code
+block with a dashed separator line above and below — handy to visually
+set off pasted terminal/log output — with your cursor left on the blank
+line in the middle, ready to paste into. Unlike the other buttons, it
+inserts at your current cursor position rather than always at the end.
 
 The red **Clear** button at the end of that same row empties both the
 markdown box and the preview with one click.
+
+Below the markdown box, a small counter shows how many characters and
+lines you've written.
+
+Scrolling either the markdown box or the preview scrolls the other one
+by the same proportion, so a long draft stays easy to compare side by
+side.
+
+Next to **Copy formatted**, the **Copy as plain text** button copies
+just the plain text, with no formatting — useful if you want the raw
+words without rich text.
+
+The button in the top-right corner toggles **dark mode**. Your choice is
+remembered in the browser for next time.
 
 ## Requirements
 
@@ -123,6 +143,9 @@ of a message you typed yourself.
 - Pasting a very long unbroken line (e.g. log/command output with no
   spaces to wrap at) makes that line scroll horizontally *inside* the
   preview panel — it won't push the rest of the page out of view.
+- The preview panel has a capped height (scrolls internally once its
+  content is taller than that) so it stays in sync with the markdown
+  box instead of growing the whole page.
 - After updating the code and running `docker compose up -d --build`, do
   a hard refresh in the browser (Ctrl+Shift+R / Cmd+Shift+R) — otherwise
   it may keep showing a cached copy of the old page.

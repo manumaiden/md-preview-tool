@@ -1,13 +1,48 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.7';
-const BUILD_DATE = '22102026';
+const VERSION = '1.8';
+const BUILD_DATE = '23102026';
 
 const input = document.getElementById('markdown-input');
 const preview = document.getElementById('preview');
 
 document.getElementById('version-badge').textContent = `v${VERSION} (${BUILD_DATE}) by manumaiden`;
+
+// Dark mode: a pure UI preference (not the markdown draft itself), so
+// remembering it in localStorage doesn't cross the "no draft persistence"
+// line from the spec -- same reasoning as other per-viewer conveniences.
+const THEME_STORAGE_KEY = 'md-preview-tool-theme';
+const themeToggle = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggle.textContent = 'Light mode';
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeToggle.textContent = 'Dark mode';
+  }
+}
+
+let storedTheme = 'light';
+try {
+  storedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+} catch (err) {
+  storedTheme = 'light';
+}
+applyTheme(storedTheme);
+
+themeToggle.addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, next);
+  } catch (err) {
+    // localStorage unavailable (private browsing, etc.) -- the toggle
+    // still works for this page view, it just won't be remembered.
+  }
+});
 
 marked.setOptions({ breaks: true });
 
@@ -33,18 +68,30 @@ function renderMarkdown() {
   preview.innerHTML = marked.parse(input.value);
 }
 
+const markdownStats = document.getElementById('markdown-stats');
+
+function updateStats() {
+  const text = input.value;
+  const chars = text.length;
+  const lines = text === '' ? 0 : text.split('\n').length;
+  markdownStats.textContent = `${chars} character${chars === 1 ? '' : 's'}, ${lines} line${lines === 1 ? '' : 's'}`;
+}
+
 input.addEventListener('input', () => {
+  updateStats();
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(renderMarkdown, 150);
 });
 
 renderMarkdown();
+updateStats();
 
 const clearButton = document.getElementById('clear-button');
 
 clearButton.addEventListener('click', () => {
   input.value = '';
   renderMarkdown();
+  updateStats();
   input.focus();
 });
 
@@ -100,6 +147,26 @@ async function copyFormatted() {
 
 copyButton.addEventListener('click', copyFormatted);
 
+const copyPlainButton = document.getElementById('copy-plain-button');
+
+async function copyPlain() {
+  const text = preview.innerText;
+
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    showStatus('Automatic copy not supported by this browser: select the text in the preview and copy with Ctrl+C.', true);
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    showStatus('Copied as plain text.', false);
+  } catch (err) {
+    showStatus('Clipboard permission denied by the browser: select the text in the preview and copy with Ctrl+C.', true);
+  }
+}
+
+copyPlainButton.addEventListener('click', copyPlain);
+
 // Snippet buttons (signature + templates): each reads its text from a file
 // under snippets/, bind-mounted into the container so it can be edited on
 // the host with any text editor and picked up on the next page reload,
@@ -128,6 +195,7 @@ function appendSnippet(text) {
   }
   input.value = current + separator + text;
   renderMarkdown();
+  updateStats();
   input.focus();
   input.selectionStart = input.selectionEnd = input.value.length;
 }
@@ -151,3 +219,48 @@ window.addEventListener('scroll', () => {
 scrollTopButton.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// "Insert Code Block" button: inserts a fenced code block with a dashed
+// separator line above and below (common convention for pasted terminal
+// output, see GUIDE.md), with the cursor left on the blank line in the
+// middle, ready to paste into. Inserted at the current cursor position
+// (not appended at the end, unlike the snippet buttons) so it can be
+// dropped in the middle of a draft.
+const codeBlockButton = document.getElementById('code-block-button');
+const CODE_BLOCK_DASH_COUNT = 80;
+const CODE_BLOCK_DASH_LINE = '-'.repeat(CODE_BLOCK_DASH_COUNT);
+const CODE_BLOCK_PREFIX = '```bash\n' + CODE_BLOCK_DASH_LINE + '\n';
+const CODE_BLOCK_TEMPLATE = CODE_BLOCK_PREFIX + '\n' + CODE_BLOCK_DASH_LINE + '\n```';
+
+codeBlockButton.addEventListener('click', () => {
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
+  const before = input.value.slice(0, start);
+  const after = input.value.slice(end);
+  input.value = before + CODE_BLOCK_TEMPLATE + after;
+  renderMarkdown();
+  updateStats();
+  input.focus();
+  const cursorPos = start + CODE_BLOCK_PREFIX.length;
+  input.selectionStart = input.selectionEnd = cursorPos;
+});
+
+// Synced scroll: scrolling either the markdown textarea or the preview
+// moves the other by the same proportion, so a long draft stays easy to
+// compare side by side. Guarded with `isSyncingScroll` to avoid the two
+// scroll listeners triggering each other in an infinite loop.
+let isSyncingScroll = false;
+
+function syncScroll(source, target) {
+  if (isSyncingScroll) return;
+  isSyncingScroll = true;
+  const sourceRange = source.scrollHeight - source.clientHeight;
+  if (sourceRange > 0) {
+    const ratio = source.scrollTop / sourceRange;
+    target.scrollTop = ratio * (target.scrollHeight - target.clientHeight);
+  }
+  isSyncingScroll = false;
+}
+
+input.addEventListener('scroll', () => syncScroll(input, preview));
+preview.addEventListener('scroll', () => syncScroll(preview, input));
