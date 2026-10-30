@@ -211,7 +211,7 @@ header {
   background: var(--preview-bg);
 }
 
-#preview :first-child { margin-top: 0; }
+#preview > :first-child { margin-top: 0; }
 
 /* Long unbroken lines (e.g. pasted log/table output) scroll horizontally
    inside their own box instead of forcing the panel, and the whole page,

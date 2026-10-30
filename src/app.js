@@ -1,8 +1,8 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.9';
-const BUILD_DATE = '23102026';
+const VERSION = '1.10';
+const BUILD_DATE = '30102026';
 
 const input = document.getElementById('markdown-input');
 const preview = document.getElementById('preview');
@@ -62,6 +62,15 @@ marked.use({
   },
 });
 
+// The preview is contenteditable for small manual corrections, but a
+// native rich-text paste there would skip the HTML escaping above
+// entirely -- force plain text so pasted content can't carry a live
+// element (e.g. an <img onerror=...>) into the page or into the copy.
+preview.addEventListener('paste', (e) => {
+  e.preventDefault();
+  document.execCommand('insertText', false, e.clipboardData.getData('text/plain'));
+});
+
 let debounceTimer = null;
 
 function renderMarkdown() {
@@ -103,6 +112,9 @@ function showStatus(message, isError) {
   copyStatus.className = isError ? 'error' : 'success';
 }
 
+const MSG_NOT_SUPPORTED = 'Automatic copy not supported by this browser: select the text in the preview and copy with Ctrl+C.';
+const MSG_COPY_FAILED = 'Automatic copy failed (permission denied or another browser restriction): select the text in the preview and copy with Ctrl+C.';
+
 // Font applied to the copied rich text so it also survives paste into the
 // ticketing tool, the same way bold/italic/headings already do: wrapping
 // the copied HTML in an element with an inline style carries that style
@@ -120,6 +132,11 @@ const COPY_FONT_SIZE = '13pt';
 const COPY_ZERO_MARGIN_SELECTOR = 'p, ul, ol, li, h1, h2, h3, h4, h5, h6, blockquote, pre';
 
 async function copyFormatted() {
+  // Flush any render still waiting on the debounce, so a click right after
+  // typing never copies the version from before the last keystroke.
+  clearTimeout(debounceTimer);
+  renderMarkdown();
+
   const wrapper = document.createElement('div');
   wrapper.innerHTML = preview.innerHTML;
   wrapper.querySelectorAll(COPY_ZERO_MARGIN_SELECTOR).forEach((el) => {
@@ -129,7 +146,7 @@ async function copyFormatted() {
   const text = preview.innerText;
 
   if (!navigator.clipboard || !window.ClipboardItem) {
-    showStatus('Automatic copy not supported by this browser: select the text in the preview and copy with Ctrl+C.', true);
+    showStatus(MSG_NOT_SUPPORTED, true);
     return;
   }
 
@@ -141,7 +158,7 @@ async function copyFormatted() {
     await navigator.clipboard.write([item]);
     showStatus('Copied to clipboard.', false);
   } catch (err) {
-    showStatus('Clipboard permission denied by the browser: select the text in the preview and copy with Ctrl+C.', true);
+    showStatus(MSG_COPY_FAILED, true);
   }
 }
 
@@ -150,10 +167,13 @@ copyButton.addEventListener('click', copyFormatted);
 const copyPlainButton = document.getElementById('copy-plain-button');
 
 async function copyPlain() {
+  clearTimeout(debounceTimer);
+  renderMarkdown();
+
   const text = preview.innerText;
 
   if (!navigator.clipboard || !navigator.clipboard.writeText) {
-    showStatus('Automatic copy not supported by this browser: select the text in the preview and copy with Ctrl+C.', true);
+    showStatus(MSG_NOT_SUPPORTED, true);
     return;
   }
 
@@ -161,7 +181,7 @@ async function copyPlain() {
     await navigator.clipboard.writeText(text);
     showStatus('Copied as plain text.', false);
   } catch (err) {
-    showStatus('Clipboard permission denied by the browser: select the text in the preview and copy with Ctrl+C.', true);
+    showStatus(MSG_COPY_FAILED, true);
   }
 }
 
@@ -202,7 +222,10 @@ function appendSnippet(text) {
 
 document.querySelectorAll('.snippet-button').forEach((button) => {
   const name = button.dataset.snippet;
-  loadSnippet(name);
+  // Disabled until its fetch resolves, so a click in that brief window
+  // can't silently no-op (appendSnippet skips an empty/undefined text).
+  button.disabled = true;
+  loadSnippet(name).then(() => { button.disabled = false; });
   button.addEventListener('click', () => appendSnippet(snippetCache[name]));
 });
 
