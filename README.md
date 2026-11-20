@@ -7,7 +7,7 @@ paste already-rendered text.
 
 ## In action
 
-![Writing markdown, watching the live preview, inserting a code block, switching to dark mode, and copying the formatted result](docs/screenshots/demo.gif)
+![Clicking renamed Signature/Template buttons, inserting a code block, switching to dark mode, and copying the formatted result](docs/screenshots/demo.gif)
 
 ## What it does
 
