@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Markdown Preview Tool</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="themes.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +13,14 @@
       <h1>Markdown Preview Tool <span id="version-badge" class="version-badge"></span></h1>
       <p class="subtitle">Write in markdown, copy the formatted result into the ticketing tool</p>
     </div>
-    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">Dark mode</button>
+    <select id="theme-select" class="theme-select" aria-label="Choose a theme">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="frosted">Frosted</option>
+      <option value="terminal">Terminal</option>
+      <option value="fluent">Fluent</option>
+      <option value="nebula">Nebula</option>
+    </select>
   </header>
   <main class="panels">
     <section class="panel">

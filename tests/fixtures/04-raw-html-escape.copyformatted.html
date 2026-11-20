@@ -1,0 +1,6 @@
+<div style="font-family: 'Courier New', Courier, monospace; font-size: 13pt;"><h1 style="margin: 0px;">Case #70150 — Customer pasted raw HTML into the ticket body</h1>
+<p style="margin: 0px;">The customer's original message included this snippet verbatim:</p>
+&lt;img src="x" onerror="alert(1)"&gt;
+
+<p style="margin: 0px;">It must render as plain escaped text in the preview, never execute, and must<br>never reach the clipboard as a live tag either.</p>
+</div>

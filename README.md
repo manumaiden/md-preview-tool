@@ -49,8 +49,9 @@ Next to **Copy formatted**, the **Copy as plain text** button copies
 just the plain text, with no formatting — useful if you want the raw
 words without rich text.
 
-The button in the top-right corner toggles **dark mode**. Your choice is
-remembered in the browser for next time.
+The dropdown in the top-right corner picks a **theme**: Light, Dark,
+Frosted, Terminal, Fluent, Nebula — each with its own colors and fonts.
+Your choice is remembered in the browser for next time.
 
 ## Requirements
 
@@ -77,7 +78,8 @@ remembered in the browser for next time.
 
 Your data never leaves your machine: everything runs locally, there is no
 backend and no external network calls once the page is loaded (the
-markdown library is bundled, not loaded from a CDN).
+markdown library and the four extra theme fonts — Inter, Poppins, Open
+Sans, JetBrains Mono — are all bundled, none loaded from a CDN).
 
 ### Changing the port
 
@@ -160,3 +162,8 @@ of a message you typed yourself.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+The bundled markdown library (`marked.js`) is MIT-licensed. The four
+bundled theme fonts (Inter, Poppins, Open Sans, JetBrains Mono) are each
+SIL Open Font License 1.1 — see the `*-OFL.txt` files next to them in
+`src/vendor/fonts/`.

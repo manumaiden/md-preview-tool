@@ -1,0 +1,8 @@
+Case #70150 — Customer pasted raw HTML into the ticket body
+
+The customer's original message included this snippet verbatim:
+
+<img src="x" onerror="alert(1)">
+
+It must render as plain escaped text in the preview, never execute, and must
+never reach the clipboard as a live tag either.

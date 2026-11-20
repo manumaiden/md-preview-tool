@@ -1,0 +1,11 @@
+<div style="font-family: 'Courier New', Courier, monospace; font-size: 13pt;"><h1 style="margin: 0px;">Case #70044 — Backup job fails nightly at 02:00</h1>
+<h2 style="margin: 0px;">Log excerpt</h2>
+<pre style="margin: 0px;"><code class="language-bash">--------------------------------------------------------------------------------
+Nov 18 02:00:11 backup01 rsync[2211]: ERROR: connection unexpectedly closed
+Nov 18 02:00:11 backup01 rsync[2211]: rsync error: error in rsync protocol data stream (code 12)
+Nov 18 02:00:12 backup01 systemd[1]: backup-nightly.service: Main process exited, code=exited, status=12
+--------------------------------------------------------------------------------
+</code></pre>
+<h2 style="margin: 0px;">Next step</h2>
+<p style="margin: 0px;">Check <code>backup01</code> disk space and the target NAS share permissions before the next run.</p>
+</div>

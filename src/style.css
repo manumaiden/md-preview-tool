@@ -1,73 +1,10 @@
 * { box-sizing: border-box; }
 
-:root {
-  --bg: #f5f5f5;
-  --text: #1a1a1a;
-  --panel-bg: #fff;
-  --panel-border: #ddd;
-  --muted-text: #666;
-  --subtitle-text: #555;
-  --version-text: #999;
-  --input-border: #ccc;
-  --preview-bg: #fafafa;
-  --snippet-bg: #eef2ff;
-  --snippet-text: #3730a3;
-  --snippet-border: #c7d2fe;
-  --snippet-hover-bg: #e0e7ff;
-  --code-block-bg: #ecfdf5;
-  --code-block-text: #065f46;
-  --code-block-border: #a7f3d0;
-  --code-block-hover-bg: #d1fae5;
-  --clear-bg: #fee2e2;
-  --clear-text: #b91c1c;
-  --clear-border: #fca5a5;
-  --clear-hover-bg: #fecaca;
-  --primary-bg: #2563eb;
-  --primary-hover-bg: #1d4ed8;
-  --primary-text: #fff;
-  --secondary-bg: transparent;
-  --secondary-text: #2563eb;
-  --secondary-border: #2563eb;
-  --secondary-hover-bg: #eff6ff;
-  --error-text: #b91c1c;
-  --success-text: #15803d;
-}
-
-:root[data-theme="dark"] {
-  --bg: #18181b;
-  --text: #e5e5e5;
-  --panel-bg: #27272a;
-  --panel-border: #3f3f46;
-  --muted-text: #a1a1aa;
-  --subtitle-text: #a1a1aa;
-  --version-text: #71717a;
-  --input-border: #52525b;
-  --preview-bg: #1f1f23;
-  --snippet-bg: #312e81;
-  --snippet-text: #c7d2fe;
-  --snippet-border: #4338ca;
-  --snippet-hover-bg: #3730a3;
-  --code-block-bg: #064e3b;
-  --code-block-text: #a7f3d0;
-  --code-block-border: #065f46;
-  --code-block-hover-bg: #065f46;
-  --clear-bg: #450a0a;
-  --clear-text: #fca5a5;
-  --clear-border: #7f1d1d;
-  --clear-hover-bg: #7f1d1d;
-  --primary-bg: #3b82f6;
-  --primary-hover-bg: #2563eb;
-  --primary-text: #fff;
-  --secondary-bg: transparent;
-  --secondary-text: #60a5fa;
-  --secondary-border: #60a5fa;
-  --secondary-hover-bg: #1e3a5f;
-  --error-text: #f87171;
-  --success-text: #4ade80;
-}
+/* Palette and font tokens for all 6 themes live in themes.css, loaded
+   before this file -- nothing here defines a color or font value itself. */
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
   margin: 0;
   padding: 1.5rem;
   background: var(--bg);
@@ -84,6 +21,8 @@ header {
 
 .header-text { flex: 1; }
 
+header h1 { font-family: var(--font-heading); }
+
 .subtitle { color: var(--subtitle-text); margin-top: 0.25rem; }
 
 .version-badge {
@@ -92,9 +31,10 @@ header {
   color: var(--version-text);
 }
 
-.theme-toggle {
+.theme-select {
   padding: 0.4rem 0.7rem;
   font-size: 0.9rem;
+  font-family: var(--font-sans);
   background: var(--panel-bg);
   color: var(--text);
   border: 1px solid var(--panel-border);
@@ -103,7 +43,7 @@ header {
   white-space: nowrap;
 }
 
-.theme-toggle:hover { background: var(--snippet-hover-bg); }
+.theme-select:hover { background: var(--snippet-hover-bg); }
 
 .panels {
   display: flex;
@@ -127,6 +67,7 @@ header {
 .panel h2 {
   margin-top: 0;
   font-size: 1rem;
+  font-family: var(--font-heading);
   color: var(--muted-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -179,7 +120,7 @@ header {
 #markdown-input {
   flex: 1;
   min-height: 400px;
-  font-family: "SF Mono", Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.95rem;
   padding: 0.75rem;
   border: 1px solid var(--input-border);
@@ -212,6 +153,16 @@ header {
 }
 
 #preview > :first-child { margin-top: 0; }
+
+/* On-screen only, like the two rules below -- copyFormatted() always
+   writes its own explicit font (Courier New) and never reads these, so
+   this never changes what lands in the clipboard. */
+#preview h1, #preview h2, #preview h3, #preview h4, #preview h5, #preview h6 {
+  font-family: var(--font-heading);
+}
+#preview pre, #preview code {
+  font-family: var(--font-mono);
+}
 
 /* Long unbroken lines (e.g. pasted log/table output) scroll horizontally
    inside their own box instead of forcing the panel, and the whole page,

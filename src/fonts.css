@@ -1,0 +1,44 @@
+/* Vendored, locally-hosted fonts (no CDN at runtime) -- used only by the
+   "frosted", "fluent" and "nebula" themes in themes.css. "light"/"dark"/
+   "terminal" keep the system-font stacks they already used. Each family's
+   OFL license is alongside its file in vendor/fonts/. */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('vendor/fonts/inter-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('vendor/fonts/open-sans-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('vendor/fonts/poppins-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('vendor/fonts/poppins-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('vendor/fonts/jetbrains-mono-400.woff2') format('woff2');
+}

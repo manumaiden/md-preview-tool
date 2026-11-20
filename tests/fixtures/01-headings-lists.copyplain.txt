@@ -1,0 +1,12 @@
+Case #70012 — Printer queue stuck after firmware update
+SUMMARY
+
+All print jobs sent to HP-FLOOR3 stay queued and never complete since this morning's firmware push. Affects every user on that floor.
+
+STEPS TAKEN
+Restarted the print spooler service
+Rolled back the firmware to the previous version
+Re-submitted a test print job
+STILL OPEN
+Confirm with the vendor whether the new firmware has a known regression
+Check if other printers on the same subnet are affected

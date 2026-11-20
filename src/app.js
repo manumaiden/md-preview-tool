@@ -1,7 +1,7 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.11';
+const VERSION = '1.12';
 const BUILD_DATE = '20112026';
 
 const input = document.getElementById('markdown-input');
@@ -9,37 +9,36 @@ const preview = document.getElementById('preview');
 
 document.getElementById('version-badge').textContent = `v${VERSION} (${BUILD_DATE}) by manumaiden`;
 
-// Dark mode: a pure UI preference (not the markdown draft itself), so
+// Theme: a pure UI preference (not the markdown draft itself), so
 // remembering it in localStorage doesn't cross the "no draft persistence"
 // line from the spec -- same reasoning as other per-viewer conveniences.
+// Palette/font values for all 6 live in themes.css/fonts.css; this only
+// picks which one is active.
+const THEMES = ['light', 'dark', 'frosted', 'terminal', 'fluent', 'nebula'];
 const THEME_STORAGE_KEY = 'md-preview-tool-theme';
-const themeToggle = document.getElementById('theme-toggle');
+const themeSelect = document.getElementById('theme-select');
 
 function applyTheme(theme) {
-  if (theme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    themeToggle.textContent = 'Light mode';
-  } else {
-    document.documentElement.setAttribute('data-theme', 'light');
-    themeToggle.textContent = 'Dark mode';
-  }
+  document.documentElement.setAttribute('data-theme', theme);
+  themeSelect.value = theme;
 }
 
 let storedTheme = 'light';
 try {
-  storedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+  const stored = localStorage.getItem(THEME_STORAGE_KEY);
+  storedTheme = THEMES.includes(stored) ? stored : 'light';
 } catch (err) {
   storedTheme = 'light';
 }
 applyTheme(storedTheme);
 
-themeToggle.addEventListener('click', () => {
-  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+themeSelect.addEventListener('change', () => {
+  const next = THEMES.includes(themeSelect.value) ? themeSelect.value : 'light';
   applyTheme(next);
   try {
     localStorage.setItem(THEME_STORAGE_KEY, next);
   } catch (err) {
-    // localStorage unavailable (private browsing, etc.) -- the toggle
+    // localStorage unavailable (private browsing, etc.) -- the selector
     // still works for this page view, it just won't be remembered.
   }
 });
