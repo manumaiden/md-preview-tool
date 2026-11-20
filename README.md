@@ -126,6 +126,13 @@ text file is simpler and more reliable than adding a backend just to save
 changes from the page, and it means you can back up, version, or copy
 your `snippets/` folder like any other file.
 
+**Renaming a button:** add a first line `<!-- label: Your Name Here -->`
+to the corresponding file — it is read as the button's label and removed
+before the rest is inserted, so it never shows up in the text you paste.
+Without this line the button keeps the name already in the page (e.g.
+"Template 3"). This only renames a button; adding a brand new one (a
+6th template) still needs one line in `src/index.html`.
+
 **Tip:** each button appends its text to whatever is already in the
 markdown box (with a blank line in between if needed), it does not
 replace what you've written. Click multiple buttons in sequence if you

@@ -1,8 +1,8 @@
 // Bump VERSION/BUILD_DATE by hand on every release, alongside CHANGELOG.md
 // (same convention as sos-net/sos-pcap/wgnettools/ifname etc: two-part
 // version, build date as DDMMYYYY).
-const VERSION = '1.10';
-const BUILD_DATE = '30102026';
+const VERSION = '1.11';
+const BUILD_DATE = '20112026';
 
 const input = document.getElementById('markdown-input');
 const preview = document.getElementById('preview');
@@ -193,10 +193,21 @@ copyPlainButton.addEventListener('click', copyPlain);
 // without rebuilding the container. See GUIDE.md.
 const snippetCache = {};
 
-async function loadSnippet(name) {
+// Optional first line `<!-- label: Custom Name -->` renames the button and
+// is stripped from the inserted text; without it the button keeps the
+// text already in index.html. See GUIDE.md.
+const LABEL_RE = /^<!--\s*label:\s*(.+?)\s*-->\s*\n?/;
+
+async function loadSnippet(name, button) {
   try {
     const res = await fetch(`snippets/${name}.md`, { cache: 'no-store' });
-    snippetCache[name] = res.ok ? await res.text() : '';
+    let text = res.ok ? await res.text() : '';
+    const match = text.match(LABEL_RE);
+    if (match) {
+      text = text.slice(match[0].length);
+      if (button) button.textContent = match[1];
+    }
+    snippetCache[name] = text;
   } catch (err) {
     snippetCache[name] = '';
   }
@@ -225,7 +236,7 @@ document.querySelectorAll('.snippet-button').forEach((button) => {
   // Disabled until its fetch resolves, so a click in that brief window
   // can't silently no-op (appendSnippet skips an empty/undefined text).
   button.disabled = true;
-  loadSnippet(name).then(() => { button.disabled = false; });
+  loadSnippet(name, button).then(() => { button.disabled = false; });
   button.addEventListener('click', () => appendSnippet(snippetCache[name]));
 });
 
